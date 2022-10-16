@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+  node:
+    container_name: node_server
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+    command: npm start
+    networks:
+      - common
+    environment:
+      PORT: 3000
+      MONGO_URL: 'mongodb+srv://admin:admin@cluster0.yjp1g.mongodb.net/db_crawler?retryWrites=true&w=majority'
+      NODE_ENV: 'development'
+  
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data:/data/db
+    networks:
+      - common
+
+networks:
+  common:
